@@ -1,33 +1,25 @@
-$(function(){
+var orm = require("../config/orm.js");
 
-    $(".create-form").on("submit", function(event){
-        event.preventDefault();
-        
-        var newBurger = {
-            name: $("#burger").val().trim()
-        };
+var burger ={
 
-        $.ajax("/api/burger", {
-            type: "POST",
-            data: newBurger
-        }).then(
-            function(){
-                console.log("Test Point Create");
-                location.reload();
-            }
-        );
-    });
+    all: function(cb){
+        orm.selectAll("burgers", function(res){
+            cb(res);
+        });
+    },
 
-    $(".devour").on("click", function(event){
-        var id = $(this).data("id");
+    create: function(cols, vals, cb){
+        orm.insertOne("burgers", cols, vals, function(res){
+            cb(res);
+        });
+    },
 
-        $.ajax("/api/burger" + id, {
-            type: "DELETE",
-        }).then(
-            function(){
-                console.log("Test Burger Delete")
-                location.reload();
-            }
-        );
-    });
-});
+    update: function(objColVals, condition, cb){
+        orm.updateOne("burgers", objColVals, condition, function(res){
+            cb(res);
+        });
+    }
+};
+
+
+module.exports = burger;
