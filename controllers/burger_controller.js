@@ -9,31 +9,41 @@ var burger = require("../models/burger.js");
 // ==== Create routes and logic ==== //
 router.get("/", function(req, res){
     burger.all(function(data){
-        var food = {
-            burger: data
+        var hbsObject = {
+            burgers: data
         };
-        console.log(food);
-        res.render("index", food);
+        console.log(hbsObject);
+        res.render("index", hbsObject);
     });
 });
 
-router.post("/api/burger", function(req, res){
+router.post("/api/burgers", function(req, res){
     burger.create([
-        "burger_name", "devoured"
+        "name", "devoured"
     ],[
-        req.body.burger_name, req.body.devoured
+        req.body.name, req.body.devoured
     ], function(result){
-        res.json({ id: result.insertId });    
+        //res.json({ id: result.insertId });  
+        res.redirect("/");  
     });
 });
 
-// router.put("/api/burger/:id", function(req, res){
-//     var condition = "id = " + req.params.id;
+router.post("/api/burgers/:id", function(req, res){
+    var condition = "id = " + req.params.id;
 
-//     console.log("condition", condition);
-// });
+    console.log("condition" + condition);
+    console.log("go horns")
 
-router.delete("/api/burger/:id", function(req, res){
+    burger.update(
+        {
+            devoured: true
+        },
+        condition, function(result){
+            res.redirect("/")
+        });
+});
+
+router.delete("/api/burgers/:id", function(req, res){
     var condition = "id = " + req.params.id;
 
     burger.delete(condition, function(result){

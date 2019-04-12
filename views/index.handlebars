@@ -1,19 +1,30 @@
 <h2>Eat-Da-Burger</h2>
 
 <ul>
-    {{#each burger}}
+    {{#each burgers}}
         {{#unless devoured}}
-            {{> burgers/burger-block devour=true}}
+        <div class="burger">
+            <form action="/api/burgers/{{this.id}}" method="POST">
+                {{this.name}}
+
+                <button type="submit">Delete the Burger!</button>
+                {{!-- <h6>Enter a burger you want to eat, and then click the "Submit" button.</h6> --}}
+
+            </form>
+        </div>
         {{/unless}}
     {{/each}}
 
-    <button class="devour" data-id="{{this.id}}">Devour The Burger!</button>
 </ul>
 
 <ul>
-    {{#each burger}}
+    {{#each burgers}}
         {{#if devoured}}
-            {{> burger/burger-block devour=false}}
+            <li>
+                <div class="burger">
+                    {{this.name}}
+                </div>
+            </li>
         {{/if}}
     {{/each}}
 </ul>
@@ -21,14 +32,14 @@
 
 {{!-- Create a new burger --}}
 
-<form class="create-form">
+<form class="create-form" action="/api/burgers" method="POST">
 
     <div class="form-group">
-        <label for="burger">Type of Burger</label>
-        <input type="text" id="burger" name="name">
+        <label for="ca">Type of Burger</label>
+        <input type="text" id="ca" name="name">
     </div>
 
-    <button type="submit">Add A Burger!</button>
+    <button type="submit">Add a Burger!</button>
     <h6>Enter a burger you want to eat, and then click the "Submit" button.</h6>
 
 </form>
